@@ -60,7 +60,7 @@ public class CreateWatchFile {
             List<String> lines = Files.readAllLines(Paths.get(filePath));
             for (String line : lines) {
                 String[] columns = line.split("\t");
-                if (columns.length > columnIndex) {
+                if (columns.length > columnIndex && !columns[columnIndex].isEmpty()) {
                     columnData.add(columns[columnIndex]);
                 }
             }
@@ -72,7 +72,11 @@ public class CreateWatchFile {
 
     private static <T> T getRandomElement(List<T> list, Random random) {
         int index = random.nextInt(list.size());
+        while (index == 0) {
+            index = random.nextInt(list.size());
+        }
         return list.get(index);
     }
 }
+
 

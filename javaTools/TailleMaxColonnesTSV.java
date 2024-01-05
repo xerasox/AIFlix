@@ -2,8 +2,7 @@ package javaTools;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.IOException; // Add missing import statement
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
@@ -24,10 +23,15 @@ public class TailleMaxColonnesTSV {
 
             // Initialiser les tailles maximales à zéro
             taillesMax = null;
-            int j = 1;
+            boolean premiereOccurrence = true;
 
             // Lire le fichier ligne par ligne
             while ((ligne = br.readLine()) != null) {
+                
+                if (premiereOccurrence) {
+                    premiereOccurrence = false;
+                    continue; // Ignorer la première occurrence
+                }
 
                 // Diviser la ligne en colonnes en utilisant la tabulation comme séparateur
                 String[] colonnes = ligne.split("\t");
@@ -41,18 +45,16 @@ public class TailleMaxColonnesTSV {
                     }
                 }
 
-                if (j != 1){
-                    for (int i = 0; i < colonnes.length; i++) {
-                        int tailleColonne = colonnes[i].length();
-                        if (tailleColonne > taillesMax[i]) {
-                            taillesMax[i] = tailleColonne;
-                        }
+                for (int i = 0; i < colonnes.length; i++) {
+                    int tailleColonne = colonnes[i].length();
+                    if (tailleColonne > taillesMax[i]) {
+                        taillesMax[i] = tailleColonne;
+                    }
+                    if (taillesMax[i] > 100) {
+                        taillesMax[i] = 100;
                     }
                 }
-
-                j++;
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

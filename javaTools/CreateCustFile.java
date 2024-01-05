@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
+import java.time.format.DateTimeFormatter;
 
 public class CreateCustFile {
     public static void main(String[] args) {
@@ -18,22 +19,31 @@ public class CreateCustFile {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("rawData\\custFile.tsv"))) {
 
-            String header = "accountNumber\tfirstName\tlastName\tgender\tsubscriptionDate\temailAddress\tsubscriptionProgram";
+            String header = "accountNumber\tfirstName\tlastName\tgender\tbirthDate\temailAddress\tsubscriptionDate\tsubscriptionProgram";
             writer.write(header);
             writer.newLine();
 
             Random random = new Random();
             for (int i = 0; i < 1000000; i++) {
                 String accountNumber = String.format("%010d", i+1);
-                String[] firstNameWithGender = firstNames[random.nextInt(firstNames.length)];
+                int j = random.nextInt(firstNames.length);
+                while (j == 0) {
+                    j = random.nextInt(firstNames.length);
+                }
+                String[] firstNameWithGender = firstNames[j];
                 String firstName = firstNameWithGender[0];
                 String gender = firstNameWithGender[1];
+                int k = random.nextInt(firstNames.length);
+                while (k == 0) {
+                    k = random.nextInt(lastNames.length);
+                }
                 String lastName = lastNames[random.nextInt(lastNames.length)];
-                String subscriptionDate = generateSubscriptionDate();
+                String birthdate = generateBirthdate();
                 String emailAddress = firstName.toLowerCase() + "." + lastName.toLowerCase() + "@domain.com";
+                String subscriptionDate = generateSubscriptionDate();
                 String subscriptionProgram = generateSubscriptionProgram();
                 String line = accountNumber + "\t" + firstName + "\t" + lastName + "\t" + gender + "\t" +
-                        subscriptionDate + "\t" + emailAddress + "\t" + subscriptionProgram;
+                        birthdate + "\t" + emailAddress + "\t" + subscriptionDate + "\t" + subscriptionProgram;
                 writer.write(line);
                 writer.newLine();
             }
@@ -41,6 +51,7 @@ public class CreateCustFile {
             e.printStackTrace();
         }
     }
+    // ...
 
     private static String[][] readFirstNamesFromFile(String filePath) {
         List<String[]> firstNamesList = new ArrayList<>();
@@ -90,5 +101,17 @@ public class CreateCustFile {
         return subscriptionPrograms[index];
     }
 
+private static String generateBirthdate() {
+        LocalDate startDate = LocalDate.of(1920, 1, 1);
+        LocalDate endDate = LocalDate.of(2020, 12, 31);
+        long startEpochDay = startDate.toEpochDay();
+        long endEpochDay = endDate.toEpochDay();
+        long randomEpochDay = ThreadLocalRandom.current().nextLong(startEpochDay, endEpochDay + 1);
+        LocalDate randomDate = LocalDate.ofEpochDay(randomEpochDay);
+        return randomDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+
 }
+
 

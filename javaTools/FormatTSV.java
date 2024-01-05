@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 public class FormatTSV {
    
     public static void main(String[] args) {
-        String inputFile = "C:\\Users\\xeraso\\Downloads\\title.basics.tsv\\data.tsv"; // Remplacez par le chemin de votre fichier TSV
+        String inputFile = "rawData\\custFile.tsv"; // Remplacez par le chemin de votre fichier TSV
         String outputFile = "C:\\Users\\xeraso\\Desktop\\output.txt"; // Remplacez par le chemin de votre fichier de sortie
         String copyTable = "C:\\Users\\xeraso\\Desktop\\copy.txt"; // Remplacez par le chemin de votre fichier de sortie
 
@@ -64,6 +64,11 @@ public class FormatTSV {
                         // Mesurer la taille de la chaîne
                         int taille = maChaine.length();
 
+                        if (taille > 100) {
+                            taille = 100;
+                            maChaine = maChaine.substring(0, 100);
+                        }
+
                         nombreEspaces = taillesTransfMax[i] - taille;
 
                         nouvelleLigne.append(maChaine).append(" ".repeat(nombreEspaces));
@@ -78,18 +83,24 @@ public class FormatTSV {
                     
                     bt.write("01 TITRE-PRINCIPAL.");
                     bt.newLine();
+                    int total = 0;
+                    String maChaine ="";
+                    int nbEspaces = 0;
+                    int taille = 0;
 
                     for (int i = 0; i < taillesMax.length; i++) {
 
                     StringBuilder maxCopy = new StringBuilder();
+                    
+                    total = total + taillesMax[i];
 
-                     String maChaine = colonnes[i];
+                    maChaine = colonnes[i];
 
                     // Mesurer la taille de la chaîne
-                    int taille = maChaine.length();
+                    taille = maChaine.length();
 
                     //Nb d'espaces
-                    int nbEspaces = 20 - taille;
+                    nbEspaces = 20 - taille;
                     
                     maxCopy.append("  ");
                     maxCopy.append("05 ");
@@ -101,7 +112,28 @@ public class FormatTSV {
                     bt.write(maxCopy.toString());
                     bt.newLine();
                     }
-                    
+
+                    StringBuilder fillerCopy = new StringBuilder();
+                    int tailleCopy = 500;
+                    int tailleFiller = tailleCopy - total;
+                    maChaine = "FILLER";
+
+                    // Mesurer la taille de la chaîne
+                    taille = maChaine.length();
+
+                    //Nb d'espaces
+                    nbEspaces = 20 - taille;
+
+                    fillerCopy.append("  ");
+                    fillerCopy.append("05 ");
+                    fillerCopy.append(maChaine.toString());
+                    fillerCopy.append(" ".repeat(nbEspaces));
+                    fillerCopy.append("PIC X(");
+                    fillerCopy.append(tailleFiller);
+                    fillerCopy.append(")");
+                    bt.write(fillerCopy.toString());
+                    bt.newLine();
+
                 }
                 j++;   
             } 
