@@ -2,6 +2,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CreateWatchFile",
+            "request": "launch",
+            "mainClass": "javaTools.CreateWatchFile",
+            "projectName": "AIFlix_e92a10b2"
+        },
+        {
+            "type": "java",
+            "name": "CreateConsFile",
+            "request": "launch",
+            "mainClass": "javaTools.CreateConsFile",
+            "projectName": "AIFlix_e92a10b2"
+        },
+        {
+            "type": "java",
+            "name": "CreateCustFile",
+            "request": "launch",
+            "mainClass": "javaTools.CreateCustFile",
+            "projectName": "AIFlix_e92a10b2"
+        },
+        {
+            "type": "java",
             "name": "FormatTSV",
             "request": "launch",
             "mainClass": "javaTools.FormatTSV",

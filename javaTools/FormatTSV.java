@@ -2,16 +2,18 @@ package javaTools;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class FormatTSV {
    
     public static void main(String[] args) {
-        String inputFile = "C:\\Users\\xeraso\\Downloads\\title.basics.tsv\\data3.tsv"; // Remplacez par le chemin de votre fichier TSV
+        String inputFile = "C:\\Users\\xeraso\\Downloads\\title.basics.tsv\\data.tsv"; // Remplacez par le chemin de votre fichier TSV
         String outputFile = "C:\\Users\\xeraso\\Desktop\\output.txt"; // Remplacez par le chemin de votre fichier de sortie
-        String copyTable = "C:\\Users\\xeraso\\Desktop\\copyTable.txt"; // Remplacez par le chemin de votre fichier de sortie
+        String copyTable = "C:\\Users\\xeraso\\Desktop\\copy.txt"; // Remplacez par le chemin de votre fichier de sortie
 
         convertirTSVEnEspaces(inputFile, outputFile, copyTable);
     }
@@ -34,12 +36,13 @@ public class FormatTSV {
                         }
                         taillesTransfMax[i] = multipleDeCinq;
                     }
-            
-            try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
-             BufferedWriter bt = new BufferedWriter(new FileWriter(copyTable))) {
 
             String ligne;
+            // Modifier la ligne de lecture du fichier en utilisant l'encodage UTF-8
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), StandardCharsets.UTF_8));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
+                BufferedWriter bt = new BufferedWriter(new FileWriter(copyTable))) {
+                // Reste du code...
             int j = 1;
             while ((ligne = br.readLine()) != null) {
 
@@ -51,20 +54,17 @@ public class FormatTSV {
                     // Construire une nouvelle ligne avec les colonnes séparées par le nombre d'espaces spécifié
                     StringBuilder nouvelleLigne = new StringBuilder();
 
-                    for (int i = 0; i< colonnes.length; i++) {
-
+                    for (int i = 0; i < colonnes.length; i++) {
                         String maChaine = colonnes[i];
+
+                        if (colonnes[i].equals("\\N")) {
+                            maChaine = "null";
+                        }
 
                         // Mesurer la taille de la chaîne
                         int taille = maChaine.length();
-                        
-                        nombreEspaces=taillesTransfMax[i]-taille; 
-                        
-                        if (colonnes[i].equals("\\N")) {
 
-                            maChaine = "null";
-
-                        }          
+                        nombreEspaces = taillesTransfMax[i] - taille;
 
                         nouvelleLigne.append(maChaine).append(" ".repeat(nombreEspaces));
                     }

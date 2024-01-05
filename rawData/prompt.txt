@@ -1,0 +1,3 @@
+from 2 csv files : one containing 7456 first names and gender associated and the other one containing 151671 surnames, write a code that creates a tsv file containing a million of lines with account number, first names, last names, subscription date (beginning in 2020), subscription program (standrad, extended or premium) and gender
+
+from 2 csv files : one containing in first column account numbers and the other one containing on first column the content id, write a code that creates a tsv file containting 2 millions of randomly created lines with account number, content id and watch percent (between 0 and 100)
