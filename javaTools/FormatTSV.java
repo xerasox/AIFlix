@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 public class FormatTSV {
    
     public static void main(String[] args) {
-        String inputFile = "rawData\\custFile.tsv"; // Remplacez par le chemin de votre fichier TSV
+        String inputFile = "rawData\\titleFile.tsv"; // Remplacez par le chemin de votre fichier TSV
         String outputFile = "C:\\Users\\xeraso\\Desktop\\output.txt"; // Remplacez par le chemin de votre fichier de sortie
         String copyTable = "C:\\Users\\xeraso\\Desktop\\copy.txt"; // Remplacez par le chemin de votre fichier de sortie
 
